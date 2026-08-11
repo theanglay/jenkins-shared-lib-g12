@@ -9,7 +9,8 @@ COPY . .
 
 # Build the application (using the Gradle wrapper if you have it, otherwise fallback to gradle)
 # If you don't have a wrapper (gradlew), just leave it as 'gradle build -x test'
-RUN ./gradlew build -x test || gradle build -x test
+RUN chmod +x ./gradlew
+RUN gradle build -x test
 
 # --- Runtime Stage ---
 FROM eclipse-temurin:17-jre 
