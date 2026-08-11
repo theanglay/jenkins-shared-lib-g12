@@ -1,15 +1,12 @@
 # --- Build Stage ---
 ARG GRADLE_VERSION=7.6
-# Use the JDK 17 version of the Gradle image so it can compile Java 17 code!
 FROM gradle:${GRADLE_VERSION}-jdk17 AS builder
 WORKDIR /app
 
-# Copy everything into the container
+# Copy all project files into the container
 COPY . .
 
-# Build the application (using the Gradle wrapper if you have it, otherwise fallback to gradle)
-# If you don't have a wrapper (gradlew), just leave it as 'gradle build -x test'
-RUN chmod +x ./gradlew
+# Build using the system Gradle installed in the base image
 RUN gradle build -x test
 
 # --- Runtime Stage ---
@@ -18,6 +15,7 @@ ARG PORT=8080
 ENV PORT=${PORT}
 WORKDIR /app
 
+# Copy the built JAR from the builder stage
 COPY --from=builder /app/build/libs/*[!plain].jar app.jar
 
 VOLUME [ "/app/filestorage/images" ]
