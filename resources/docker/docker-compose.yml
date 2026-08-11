@@ -1,0 +1,48 @@
+services:
+  reactjs-svc:
+    image: lyvanna544/g12-reactjs-frontend
+    pull_policy: build # always build , ignore existing image
+    build: 
+      context: reactjs-frontend
+      dockerfile: Dockerfile
+    container_name: reactjs-cont 
+    ports: 
+      - 3000:80 
+    networks:
+      - fullstack-net
+  spring-svc: 
+   # missing (default) : if not exist in local , pull from remote 
+   # always -> always pull from remote 
+   # never -> pull only from local ( not remote )
+   # build 
+    pull_policy: build
+    build: 
+      context: spring-api
+      dockerfile: dev.Dockerfile
+    container_name: spring-cont
+    image: lyvanna544/g12-spring-product-api
+    ports: 
+    - 8080:8080 
+    depends_on:
+      - postgres-svc
+    networks:
+      - fullstack-net
+  postgres-svc: 
+    image: postgres
+    container_name: postgres-cont 
+    ports:
+      - 5432:5432 
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DATABASE=${DB_NAME}
+    networks:
+      - fullstack-net 
+    volumes:
+      - postgres-vol:/var/lib/postgresql 
+networks:
+  fullstack-net: 
+    name: fullstack-net 
+    driver: bridge 
+volumes: 
+  postgres-vol: 
