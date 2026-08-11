@@ -9,7 +9,8 @@ COPY gradlew ./
 RUN ./gradlew dependencies --no-daemon || true
 # Copy source code
 COPY src src
-COPY config config
+# COPY config config
+
 # Build application (skip tests)
 RUN ./gradlew  build -x test --no-daemon
 # ---------- Runtime Stage ----------
