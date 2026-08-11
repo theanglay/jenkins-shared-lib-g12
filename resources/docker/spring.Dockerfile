@@ -5,7 +5,8 @@ WORKDIR /app
 
 # 1. Copy only Gradle config first to leverage Docker caching for dependencies
 # Add this temporarily to debug
-COPY build.gradle.kts ./
+COPY . .
+RUN ls -la
 # If you have a gradle/ wrapper folder, copy that too: COPY gradle ./gradle
 
 # 2. Copy source code and build
