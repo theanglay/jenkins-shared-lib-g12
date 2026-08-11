@@ -4,7 +4,7 @@ FROM gradle:${GRADLE_VERSION} AS builder
 WORKDIR /app
 
 # 1. Copy only Gradle config first to leverage Docker caching for dependencies
-COPY build.gradle settings.gradle ./
+COPY build.gradle ./
 # If you have a gradle/ wrapper folder, copy that too: COPY gradle ./gradle
 
 # 2. Copy source code and build
